@@ -12,7 +12,7 @@ client = discord.Client(intents=intents)
 # --- إعدادات القنوات ---
 WELCOME_CHANNEL_ID = 1456605013559218217 
 LEAVE_CHANNEL_ID = 1469739078089179291
-REMINDER_CHANNEL_ID = 1456605013559218217  # القناة التي سيرسل فيها التذكير التلقائي
+REMINDER_CHANNEL_ID = 1456597406366826550  # القناة التي سيرسل فيها التذكير التلقائي
 
 # قائمة بالأذكار أو التنبيهات التي سيرسلها البوت
 REMINDERS = [
