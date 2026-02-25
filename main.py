@@ -29,7 +29,7 @@ async def on_ready():
         auto_reminder.start()
 
 # دالة التذكير التلقائي (تعمل كل ساعة مثلاً)
-@tasks.loop(hours=1.0) 
+@tasks.loop(sec=20.0) 
 async def auto_reminder():
     channel = client.get_channel(REMINDER_CHANNEL_ID)
     if channel:
