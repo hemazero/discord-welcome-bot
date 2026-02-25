@@ -2,7 +2,6 @@ import discord
 import os
 import asyncio
 import random
-from datetime import datetime, timedelta
 from discord.ext import tasks
 from keep_alive import keep_alive
 
@@ -46,26 +45,23 @@ async def auto_reminder():
 
 @client.event
 async def on_message(message):
-    if message.author == client.user:
+    if message.author == client.user and not message.content.startswith("-مسح"):
         return
 
     # 1. الرد على السلام
     if message.channel.id == CHAT_CHANNEL_ID and message.content == "السلام عليكم":
         await message.reply("وعليكم السلام ورحمة الله وبركاته")
 
-    # 2. أمر المسح لرتبة محددة (/مسح)
-    if message.content == "/مسح":
+    # 2. أمر المسح الجديد (-مسح)
+    if message.content == "-مسح":
         # التأكد من وجود الرتبة لدى العضو
         role = discord.utils.get(message.author.roles, id=ADMIN_ROLE_ID)
         
         if role:
-            # حساب وقت "قبل 24 ساعة" من الآن
-            one_day_ago = datetime.utcnow() - timedelta(days=1)
+            # حذف آخر 100 رسالة (بما فيها رسائل البوت وأمر المسح نفسه)
+            deleted = await message.channel.purge(limit=100)
             
-            # حذف الرسائل التي أرسلت في آخر 24 ساعة
-            deleted = await message.channel.purge(after=one_day_ago)
-            
-            msg = await message.channel.send(f"✅ تم تنظيف الروم وحذف {len(deleted)} رسالة (آخر 24 ساعة).")
+            msg = await message.channel.send(f"✅ تم تنظيف الروم وحذف {len(deleted)} رسالة.")
             await asyncio.sleep(3)
             await msg.delete()
         else:
