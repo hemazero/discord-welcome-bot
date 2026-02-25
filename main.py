@@ -15,7 +15,7 @@ async def on_ready():
 @client.event
 async def on_member_join(member):
     # --- استبدل الرقم التالي بـ ID القناة التي تريد الترحيب فيها ---
-    channel_id = 1456597405897068710 
+    channel_id = 1456605013559218217 
     channel = client.get_channel(channel_id)
     
     if channel:
