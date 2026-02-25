@@ -2,27 +2,32 @@ import discord
 import os
 from keep_alive import keep_alive
 
-# إعداد الصلاحيات
 intents = discord.Intents.default()
-intents.members = True 
+intents.members = True  # ضروري جداً لرؤية دخول وخروج الأعضاء
 
 client = discord.Client(intents=intents)
+
+# --- ضع ID القناة هنا ---
+CHANNEL_ID = 1456605013559218217 
 
 @client.event
 async def on_ready():
     print(f'تم تشغيل البوت بنجاح باسم: {client.user}')
 
+# 1. حدث دخول عضو جديد (ترحيب)
 @client.event
 async def on_member_join(member):
-    # --- استبدل الرقم التالي بـ ID القناة التي تريد الترحيب فيها ---
-    channel_id = 1456605013559218217 
-    channel = client.get_channel(channel_id)
-    
+    channel = client.get_channel(CHANNEL_ID)
     if channel:
         await channel.send(f"يا هلا والله بـ {member.mention}! نورت السيرفر ✨")
 
-# تشغيل خادم الحماية من النوم
-keep_alive()
+# 2. حدث خروج عضو أو طرده (وداع)
+@client.event
+async def on_member_remove(member):
+    channel = client.get_channel(CHANNEL_ID)
+    if channel:
+        # يمكنك تغيير الرسالة كما تحب
+        await channel.send(f"للأسف، {member.name} غادرنا أو تم طرده.. وداعاً 💔")
 
-# تشغيل البوت باستخدام التوكن المخفي في Secrets (Render)
+keep_alive()
 client.run(os.getenv('TOKEN'))
