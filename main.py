@@ -10,10 +10,10 @@ intents.members = True
 
 client = discord.Client(intents=intents)
 
-# --- إعدادات القنوات الجديدة ---
+# --- إعدادات القنوات المحدثة ---
 WELCOME_CHANNEL_ID = 1456605013559218217 
 LEAVE_CHANNEL_ID = 1469739078089179291
-REMINDER_CHANNEL_ID = 1476013464832184583 # تم التعديل بناءً على طلبك
+REMINDER_CHANNEL_ID = 1476013464832184583 # الـ ID الجديد الذي طلبته
 
 REMINDERS = [
     "✨ **تذكير:** سبحان الله وبحمده، سبحان الله العظيم.",
@@ -23,14 +23,14 @@ REMINDERS = [
 @client.event
 async def on_ready():
     print(f'تم تشغيل البوت بنجاح باسم: {client.user}')
-    # التأكد من تشغيل التذكير التلقائي فور تشغيل البوت
+    # تشغيل التذكير التلقائي فوراً عند جاهزية البوت
     if not auto_reminder.is_running():
         auto_reminder.start()
 
 # دالة التذكير التلقائي (تعمل كل 20 ثانية)
 @tasks.loop(seconds=20.0) 
 async def auto_reminder():
-    await client.wait_until_ready() # تأكد أن البوت اتصل تماماً قبل الإرسال
+    await client.wait_until_ready() 
     channel = client.get_channel(REMINDER_CHANNEL_ID)
     if channel:
         message = random.choice(REMINDERS)
@@ -38,7 +38,7 @@ async def auto_reminder():
         try:
             await channel.send(embed=embed)
         except Exception as e:
-            print(f"خطأ في إرسال الرسالة: {e}")
+            print(f"خطأ في الإرسال: {e}")
 
 @client.event
 async def on_member_join(member):
